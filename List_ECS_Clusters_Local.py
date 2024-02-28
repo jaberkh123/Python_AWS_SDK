@@ -1,24 +1,25 @@
 #A script for list ECS cluster  from local system
 import boto3
 
-def get_ecs_clusters(aws_access_key_id, aws_secret_access_key, aws_region):
+def get_all_ecs_clusters(aws_access_key_id, aws_secret_access_key, aws_region):
     # Create an ECS client
     ecs = boto3.client('ecs', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, region_name=aws_region)
 
-    # Retrieve information about ECS clusters
-    response = ecs.describe_clusters()
+    # List all ECS clusters
+    response = ecs.list_clusters()
 
     clusters_info = []
 
-    # Extract relevant information about each cluster
-    for cluster in response['clusters']:
+    # Describe each cluster to get detailed information
+    for cluster_arn in response.get('clusterArns', []):
+        cluster_description = ecs.describe_clusters(clusters=[cluster_arn])
         cluster_info = {
-            'ClusterName': cluster['clusterName'],
-            'ClusterArn': cluster['clusterArn'],
-            'Status': cluster['status'],
-            'RegisteredContainerInstancesCount': cluster['registeredContainerInstancesCount'],
-            'RunningTasksCount': cluster['runningTasksCount'],
-            'PendingTasksCount': cluster['pendingTasksCount']
+            'ClusterName': cluster_description['clusters'][0]['clusterName'],
+            'ClusterArn': cluster_arn,
+            'Status': cluster_description['clusters'][0]['status'],
+            'RegisteredContainerInstancesCount': cluster_description['clusters'][0]['registeredContainerInstancesCount'],
+            'RunningTasksCount': cluster_description['clusters'][0]['runningTasksCount'],
+            'PendingTasksCount': cluster_description['clusters'][0]['pendingTasksCount']
         }
         clusters_info.append(cluster_info)
 
@@ -29,7 +30,7 @@ aws_access_key_id = 'your_access_key_id'
 aws_secret_access_key = 'your_secret_access_key'
 aws_region = 'your_aws_region'
 
-ecs_clusters = get_ecs_clusters(aws_access_key_id, aws_secret_access_key, aws_region)
+ecs_clusters = get_all_ecs_clusters(aws_access_key_id, aws_secret_access_key, aws_region)
 
 # Print information about each ECS cluster
 for cluster in ecs_clusters:
@@ -40,4 +41,3 @@ for cluster in ecs_clusters:
     print(f"Running Tasks Count: {cluster['RunningTasksCount']}")
     print(f"Pending Tasks Count: {cluster['PendingTasksCount']}")
     print("--------------")
-

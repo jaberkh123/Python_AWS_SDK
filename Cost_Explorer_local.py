@@ -2,11 +2,10 @@ import boto3
 
 def get_aws_billing_data():
     # Replace 'your_aws_access_key' and 'your_aws_secret_key' with your actual AWS credentials
-    aws_access_key = 'AKIAZI2LHIMVDVXJOGPX'
-    aws_secret_key = 'DO9p5C2MQTiemIRumMjF2pNFoY50oGkxn0TPPhUQ'
-    
+    aws_access_key = 'Your_Access_Key'
+    aws_secret_key = 'Your_Secret_Key 
     # Replace 'your_aws_region' with your AWS region, e.g., 'us-east-1'
-    aws_region = 'us-east-1'
+    aws_region = 'Region'
 
     # Create a Cost Explorer client
     ce_client = boto3.client('ce', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key, region_name=aws_region)

@@ -3,7 +3,7 @@ import boto3
 def get_aws_billing_data():
     # Replace 'your_aws_access_key' and 'your_aws_secret_key' with your actual AWS credentials
     aws_access_key = 'Your_Access_Key'
-    aws_secret_key = 'Your_Secret_Key 
+    aws_secret_key = 'Your_Secret_Key' 
     # Replace 'your_aws_region' with your AWS region, e.g., 'us-east-1'
     aws_region = 'Region'
 
